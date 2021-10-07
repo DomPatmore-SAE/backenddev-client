@@ -1,0 +1,45 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sample Client</title>
+</head>
+<body>
+    <!-- Create a form to submit a new project and the owner -->
+    <form id="submission" method="POST">
+        <input type="text" name="title" id=""/>
+        <button>Submit Form</button>
+    </form>
+    <ul class="projects"></ul>
+</body>
+<script>
+    window.addEventListener('DOMContentLoaded', (event) => {
+        const form = document.getElementById('submission')
+        form.addEventListener('submit',(event)=>{
+            event.preventDefault()
+            console.log("I has been submitted")
+            fetch('http://localhost:3000/project',{
+                headers:{
+                    'Accept':'application/json',
+                    'Content-Type':'application/json'
+                },
+                method:'POST',
+                body: JSON.stringify({title:"This is my cool  title"})    
+            })
+            .then(response=>response.json())
+            .then((response)=>{
+            let list = document.getElementsByClassName('projects')[0]
+            response.forEach(item => {
+                list.innerHTML += `<li>${item.name}</li>`
+
+            })
+            })
+        })
+
+        fetch('http://localhost:3000/projects')
+        .then(response=>response.json())
+
+})
+</script>
+</html>
